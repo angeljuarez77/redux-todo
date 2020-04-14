@@ -4,6 +4,7 @@
     * Action types
     * Action Creators
     * Dispatch
+        * Unbounded actions
         * Bounded action reducers
 <details>
 <summary>How do I make all of this?</summary>
@@ -46,3 +47,6 @@ export function deleteTodo(index) {
 // Remember to export everything!!!!!!!
 ```
 </details>
+
+2) Create Reducers
+    * Reducers tell us HOW the actions affect our *_store_*
