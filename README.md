@@ -10,6 +10,8 @@
 <br>
 
 ```
+// FILE STRUCTURE: src/actions/actions.js
+
 /*
  * Here we have our Action Types.
  * Remember that they SHOULD be strings attached to a const variable declaration.
