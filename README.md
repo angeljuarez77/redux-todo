@@ -6,7 +6,7 @@
     * Dispatch
         * Unbounded actions
         * Bounded action reducers
-<details open>
+<details>
 <summary>How do I make all of this?</summary>
 <br>
 
@@ -67,7 +67,7 @@ export function setVisibilityFilter(filter) {
 ### Now let us try and create an action just for deleting an item inside of our todo list.
 *Hint*: What do you think the action types and action creators should look like in order to delete an item?
 <details>
-<summary>*_Still need more guidance?_*</summary>
+<summary> *_Still need more guidance? Check here..._* </summary>
 <br>
 
 1) Create your delete todo Action Type. Should be a const variable set to a string.
@@ -80,9 +80,9 @@ export function setVisibilityFilter(filter) {
     * Remember that if there is not any existing application state we'll have to create it.
     * Reducers shouldn't produce side effects.
         * They should be *_pure functions_*
-        * This means that if you put certain arguments in then it will always produce the same output. There won't be any unexpected side effects.
+        * This means that if you put certain arguments in then it will always produce the same output. There won't be any unexpected side effects OR unexpected outputs.
         * In our Reducers the arguments are the previous state AND our action.
-<details open>
+<details>
 <summary>Let us make our initial reducer!!</summary>
 <br>
 
@@ -166,7 +166,7 @@ For now we are not going to split up our code since it introduces a few new API'
 https://redux.js.org/basics/reducers#splitting-reducers
 
 3) Create redux store. (Your application state)
-<details open>
+<details>
 <summary>Here is how we do that!</summary>
 <br>
 
