@@ -1,12 +1,12 @@
 # React TODO List
 
-1) Create actions
+1) Our first step in using redux is to create actions
     * Action types
     * Action Creators
     * Dispatch
         * Unbounded actions
         * Bounded action reducers
-<details>
+<details open>
 <summary>How do I make all of this?</summary>
 <br>
 
@@ -41,7 +41,7 @@ export const VisibilityFilters = {
 
 /* Action Creators
  *
- * Action Creators are just functions that compose a JS object and then return the said JS object
+ * Action Creators are just functions that compose a JS object adnd then return the said JS object
  * The objects they build NEED a property called "type"
  * The rest is up to your discretion.
 */
@@ -66,6 +66,14 @@ export function setVisibilityFilter(filter) {
 
 ### Now let us try and create an action just for deleting an item inside of our todo list.
 *Hint*: What do you think the action types and action creators should look like in order to delete an item?
+<details>
+<summary>*_Still need more guidance?_*</summary>
+<br>
+
+1) Create your delete todo Action Type. Should be a const variable set to a string.
+2) Make your Action Creators. They should be functions that compose an object and return that object.
+3) Then you will have to export these 2 things.
+</details>
 
 2) Create Reducers
     * Reducers tell us HOW the actions affect our *_store_*
@@ -74,12 +82,21 @@ export function setVisibilityFilter(filter) {
         * They should be *_pure functions_*
         * This means that if you put certain arguments in then it will always produce the same output. There won't be any unexpected side effects.
         * In our Reducers the arguments are the previous state AND our action.
-<details>
+<details open>
 <summary>Let us make our initial reducer!!</summary>
 <br>
 
 ```javascript
 // FILE STRUCTURE: src/reducers/reducers.js
+/*
+ * Here below we import the different const variables that describe our actions type.
+*/
+import {
+  VisibilityFilters,
+  ADD_TODO,
+  TOGGLE_TODO,
+  SET_VISIBILITY_FILTER,
+} from '../actions/actions.js';
 
 /*
  * We will create an initialState object purely for the sake of creating a state for our application
@@ -95,27 +112,71 @@ const initialState = {
  * The if statement handles the possible situation: application state doesn't exist.
  * Then we have a switch statement.
  * So basically IF app state exists --> then check what the action.type is
- * We COULD use an IF/ELSEIF statement but when you have hundreds of actions. That'll be too much
+ * We COULD use an IF/ELSEIF statement instead of SWITCH but when you have hundreds of actions.
+ * That'll be (in Angels humble opinion) too much
  * and less readable.
 */
 function todoApp(state, action) {
-    // We have to add this line in order to create an app state if one was not created before.
-    if(typeof state === 'undefined') {
-        return initialState;
-    }
+  // This if statement is ONLY to make an application state obj just in case one didn't exist already
+  if(typeof state === 'undefined') {
+    return initialState;
+  }
 
-    // Now we handle our action types in order to decide how to manipulate our state
-    switch(action.type) {
-        case ADD_TODO:
-            return Object.assign({}, state, {
-                todos: [
-                ...state.todos, { text: action.text, completed: false }
-                ]
+  // Now we handle all the other possibilities.
+  switch(action.type) {
+    case SET_VISIBILITY_FILTER:
+      return Object.assign({}, state, {
+        visibilityFilter: action.filter
+      })
+    case ADD_TODO:
+      return Object.assign({}, state, {
+        todos: [
+          ...state.todos,
+          {
+            text: action.text,
+            completed: false,
+          }
+        ]
+      })
+    case TOGGLE_TODO:
+      return Object.assign({}, state, {
+        todos: state.todos.map((todo, index) => {
+          if(index === index.action) {
+            return Object.assign({}, todo, {
+              completed: !todo.completed
             })
-        default:
-        return state;
-    }
-    return state;
+          }
+          return todo;
+        })
+      })
+    default:
+      return state;
+  }
 }
 ```
 </details>
+
+### Do you see anything odd about the code above?
+Well there is quite a lot going on inside of the one switch statement.
+It's a little dense and hard to read but ALSO it mixes a lot of different concerns.
+We are handling visual options and informative options in the same function.
+We could seperate our concerns.
+
+For now we are not going to split up our code since it introduces a few new API's and it may make it a little harder to follow along. But! If you want to split your code up then start reading the text in this link!
+https://redux.js.org/basics/reducers#splitting-reducers
+
+3) Create redux store. (Your application state)
+<details open>
+<summary>Here is how we do that!</summary>
+<br>
+
+```javascript
+// FILE STRUCTURE: src/store.js
+import { createStore } from 'redux'
+import todoApp from './reducers'
+
+const store = createStore(todoApp)
+```
+</details>
+
+4) Now let's quickly build a UI (low priority. Not necessary to know exactly why decisions were made)
