@@ -9,7 +9,7 @@
 <summary>How do I make all of this?</summary>
 <br>
 
-```
+```javascript
 // FILE STRUCTURE: src/actions/actions.js
 
 /*
