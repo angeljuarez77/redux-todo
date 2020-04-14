@@ -21,7 +21,6 @@
 
 export const ADD_TODO = 'ADD_TODO';
 export const TOGGLE_TODO = 'TOGGLE_TODO';
-export const DELETE_TODO = 'DELETE_TODO';
 
 /* Action Creators
  * Are just functions that compose a JS object and then returns the said JS object
@@ -36,17 +35,17 @@ export function addTodo(descriptionOfTodo) {
     };
 }
 
-export function toddleTodo(index) {
+export function toggleTodo(index) {
     return { type: TOGGLE_TODO, index };
-}
-
-export function deleteTodo(index) {
-    return { type: DELETE_TODO, index };
 }
 
 // Remember to export everything!!!!!!!
 ```
 </details>
 
+### Now let us try and create an action just for deleting an item inside of our todo list.
+Hint: What do you think the action types and action creators should look like?
+
 2) Create Reducers
     * Reducers tell us HOW the actions affect our *_store_*
+
