@@ -1,3 +1,7 @@
 # React TODO List
 
-I am only making this to transform the todo app from using react stat e to redux.
+1) Create actions
+    * Action types
+    * Action Creators
+    * Dispatch
+        * Bounded action reducers
