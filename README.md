@@ -18,9 +18,9 @@
  * For now we'll create them in the same file as everything else.
 */
 
-const ADD_TODO = 'ADD_TODO';
-const TOGGLE_TODO = 'TOGGLE_TODO';
-const DELETE_TODO = 'DELETE_TODO';
+export const ADD_TODO = 'ADD_TODO';
+export const TOGGLE_TODO = 'TOGGLE_TODO';
+export const DELETE_TODO = 'DELETE_TODO';
 
 /* Action Creators
  * Are just functions that compose a JS object and then returns the said JS object
@@ -28,20 +28,21 @@ const DELETE_TODO = 'DELETE_TODO';
  * The rest is up to your discretion.
 */
 
-function addTodo(descriptionOfTodo) {
+export function addTodo(descriptionOfTodo) {
     return {
         type: ADD_TODO,
         text: descriptionOfTodo
     };
 }
 
-function toddleTodo(index) {
+export function toddleTodo(index) {
     return { type: TOGGLE_TODO, index };
 }
 
-function deleteTodo(index) {
+export function deleteTodo(index) {
     return { type: DELETE_TODO, index };
 }
 
+// Remember to export everything!!!!!!!
 ```
 </details>
