@@ -8,7 +8,7 @@
 <details>
 <summary>How do I make all of this?</summary>
 <br>
-```javascript
+```
 /*
  * Your action types.
  * Remember that they SHOULD be strings tied to a const
