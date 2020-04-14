@@ -5,6 +5,9 @@
     * Action Creators
     * Dispatch
         * Bounded action reducers
+```
+test
+```
 <details>
 <summary>How do I make all of this?</summary>
 <br>
