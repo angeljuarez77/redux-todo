@@ -285,29 +285,29 @@ export default todoApp;
 
 3) Create redux store. (Your application state)
 <details open>
-    <summary>Here is how we do that!</summary>
-    <br>
-    1) Install redux. npm install redux react-redux
-    2) Create your store.
-    ```javascript
-    // FILE STRUCTURE: src/store.js
+<summary>Here is how we do that!</summary>
+<br>
+Step 1: Install redux. npm install redux react-redux
+Step 2: Create your store.
+```javascript
+// FILE STRUCTURE: src/store.js
 
-    /*
-     * We need to use createStore which comes from our redux package that we installed.
-     * We also have to import our apps ENTIRE reducer.
-    */
-    import { createStore } from 'redux'
-    import todoApp from './reducers'
+/*
+ * We need to use createStore which comes from our redux package that we installed.
+ * We also have to import our apps ENTIRE reducer.
+*/
+import { createStore } from 'redux'
+import todoApp from './reducers'
 
-    /*
-     * We could only pass in ONE REDUCER to createStore.
-     * If you have multiple reducers (which you most likely will)
-     * then you'll have to use another function provided by redux in order
-     * to combine all reducers to bring it all into
-     * createStore() at once.
-    */
-    const store = createStore(todoApp)
-    ```
+/*
+ * We could only pass in ONE REDUCER to createStore.
+ * If you have multiple reducers (which you most likely will)
+ * then you'll have to use another function provided by redux in order
+ * to combine all reducers to bring it all into
+ * createStore() at once.
+*/
+const store = createStore(todoApp)
+```
 </details>
 
 4) Now let's quickly build a UI (Low priority. Not necessary to know exactly why decisions were made)
