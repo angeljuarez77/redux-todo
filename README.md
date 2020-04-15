@@ -88,6 +88,7 @@ export function setVisibilityFilter(filter) {
 
 ```javascript
 // FILE STRUCTURE: src/reducers/reducers.js
+
 /*
  * Here below we import the different const variables that describe our actions type.
 */
@@ -109,8 +110,8 @@ const initialState = {
 
 /*
  * Here is our reducer. The function that decides how our ACTION will act upon the application state.
- * The if statement handles the possible situation: application state doesn't exist.
- * Then we have a switch statement.
+ * The if statement handles this possible situation: application state doesn't exist.
+ * Then after the if we have a switch statement.
  * So basically IF app state exists --> then check what the action.type is
  * We COULD use an IF/ELSEIF statement instead of SWITCH but when you have hundreds of actions.
  * That'll be (in Angels humble opinion) too much
@@ -160,23 +161,239 @@ function todoApp(state, action) {
 Well there is quite a lot going on inside of the one switch statement.
 It's a little dense and hard to read but ALSO it mixes a lot of different concerns.
 We are handling visual options and informative options in the same function.
-We could seperate our concerns.
-
-For now we are not going to split up our code since it introduces a few new API's and it may make it a little harder to follow along. But! If you want to split your code up then start reading the text in this link!
+We could seperate our concerns. This is a bit dense so if anything is unclear you could check on this link.
 https://redux.js.org/basics/reducers#splitting-reducers
+<details>
+<summary>Let us split up all of the todo list functionality from the entire reducer.</summary>
+<br>
+
+```javascript
+// FILE STRUCTURE: src/reducers/reducers.js
+
+/*
+ * Here below we have ONLY the todo list functionality part of our reducer.
+ * this todos function is a reducer in itself. We could have multiple reducers.
+ * at some point there will be multiple files for different reducers which is why
+ * we made a directory ./reducers/ for this.
+ * For now we will only use one file.
+*/
+function todos(state = []/* if state is undefined set it equal to an empty array */, action) {
+  switch(action.type) {
+    case ADD_TODO:
+      return [
+        ...state,
+        {
+          text: action.text,
+          completed: false
+        }
+      ]
+    case TOGGLE_TODO:
+      return state.map( (todo, index) => {
+        if(index === action.index) {
+          return Object.assign({}, todo, {
+            completed: !todo.completed
+          })
+        }
+        return todo;
+      })
+    case default:
+      return state;
+  }
+}
+
+/*
+ * This below is ALSO another reducer
+ * Because of how we are calling the other reducer(todos)
+ * We are only giving todos(state, action) an array as its first argument.
+ * This means that todos() could only update that little tiny piece of the
+ * application state!
+ * This is called reducer composition...(think how we have to "compose" the reducers to work together as one)
+ * A fundmental pattern of redux!
+*/
+function todoApp(state = initialState/* if state is undefined set it to initialState */, action) {
+  switch(action.type) {
+    case SET_VISIBILITY_FILTER:
+      return Object.assign({}, state, {
+        visibilityFilter: action.filter
+      })
+    case ADD_TODO:
+      return Object.assign({}, state, {
+        todos: todos(state.todos, action)
+      })
+  }
+}
+```
+</details>
+
+<details open>
+<summary>Now let's take it a step futher and split up the view options reducer into its own thing</summary>
+<br>
+
+```javascript
+// FILE STRUCTURE: src/reducers/reducers.js
+
+/*
+ * Let us destructure what will be our default view option.
+ *
+ * Remember that with every reducer we have to handle a situation
+ * where the application state doesn't exist. And we'll have to assign
+ * it something if it doesn't exist. Now that we're going to create a
+ * visibility reducer we'll have to handle an undefined state.
+*/
+const { SHOW_ALL } = VisibilityFilters
+
+function visibilityFilter(state = SHOW_ALL /* if the state is undefined then set it to SHOW_ALL option */, action) {
+  switch(action.type) {
+    case SET_VISIBILITY_FILTER:
+      return action.filter
+    default:
+      return state;
+  }
+}
+```
+</details>
+
+<details open>
+<summary>Now let us combine both of our newly created reducers.</summary>
+<br>
+
+```javascript
+/*
+ * This is one way to combine multiple reducers into a single one.
+ * But there is also another way to do it with a redux function.
+ * Let's see how we would do it with the redux function now...
+*/
+function todoApp(state = {}, action) {
+  return {
+    visibilityFilter: visibilityFilter(state.visibilityFilter, action),
+    todos: todos(state.todos, action)
+  }
+}
+
+const todoApp = combineReducers({
+  visibilityFilter,
+  todos
+})
+
+/*
+ * Now we export our reducer in order to use it
+ * in different parts of our application.
+*/
+export default todoApp;
+```
+</details>
 
 3) Create redux store. (Your application state)
 <details>
 <summary>Here is how we do that!</summary>
 <br>
-
+1) Install redux. `npm install redux react-redux`
+2) Create your store.
 ```javascript
 // FILE STRUCTURE: src/store.js
+
+/*
+ * We need to use createStore which comes from our redux package that we installed.
+ * We also have to import our apps ENTIRE reducer.
+*/
 import { createStore } from 'redux'
 import todoApp from './reducers'
 
+/*
+ * We could only pass in ONE REDUCER to createStore.
+ * If you have multiple reducers (which you most likely will)
+ * then you'll have to use another function provided by redux in order
+ * to combine all reducers to bring it all into
+ * createStore() at once.
+*/
 const store = createStore(todoApp)
 ```
 </details>
 
-4) Now let's quickly build a UI (low priority. Not necessary to know exactly why decisions were made)
+4) Now let's quickly build a UI (Low priority. Not necessary to know exactly why decisions were made)
+<details>
+<summary>Necessary code. Just copy and paste into their respective files.</summary>
+<br>
+
+```javascript
+// FILE STRUCTURE: src/components/Todo.js
+
+import React from 'react';
+
+function Todo(props) {
+  return(
+    <li onClick={ props.onClick } style={{ textDecoration: props.completed ? 'line-through' : 'none' }}>
+      { props.text }
+    </li>
+  )
+}
+
+export default Todo;
+```
+
+```javascript
+// FILE STRUCTURE: src/components/TodoList.js
+
+import React from 'react';
+import Todo from './Todo.js';
+
+function TodoList(props) {
+  return(
+    <ul>
+      {
+        props.todos.map( (todo, index) => <Todo
+          key={ index }
+          onClick={ () => props.onTodoClick(index) }
+          { ...props.todo }
+        /> )
+      }
+    </ul>
+  )
+}
+
+export default TodoList;
+```
+
+```javascript
+// FILE STRUCTURE: src/components/Link.js
+import react from 'react';
+
+function Link(props) {
+  if(props.active) {
+    return <span>{ props.children }</span>
+  }
+
+  return(
+    <a
+      href=""
+      onclick={ e => {
+        e.preventdefault();
+        props.onclick();
+      }}
+    >{ props.children }</a>
+  )
+}
+
+export default Link;
+```
+```javascript
+// FILE STRUCTURE: src/components/Footer.js
+import React from 'react';
+import FilterLink from '../containers/FilterLink';
+import { VisibilityFilters } from '../actions/actions.js';
+
+function Footer() {
+  return(
+    <p>
+      Show: <FilterLink filter={ VisibilityFilters.SHOW_ALL }>All</FilterLink>
+    {', '}
+      <FilterLink filter={ VisibilityFilters.SHOW_ACTIVE }>Active</FilterLink>
+    {', '}
+      <FilterLink filter={ VisibilityFilters.SHOW_COMPLETED }>Active</FilterLink>
+    </p>
+  )
+}
+
+export default Footer;
+```
+</details>
