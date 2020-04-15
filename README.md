@@ -283,7 +283,6 @@ export default todoApp;
 ```
 </details>
 
-3) Create redux store. (Your application state)
 <details open>
 <summary>Here is how we do that!</summary>
 <br>
