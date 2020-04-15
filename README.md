@@ -286,6 +286,9 @@ export default todoApp;
 <details open>
 <summary>Here is how we do that!</summary>
 <br>
+
+1) run npm install redux react-redux inside of your react app
+2) Create your store
 ```javascript
 // FILE STRUCTURE: src/store.js
 
