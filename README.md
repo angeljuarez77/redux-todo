@@ -6,7 +6,7 @@
     * Dispatch
         * Unbounded actions
         * Bounded action reducers
-<details>
+<details open>
 <summary>How do I make all of this?</summary>
 <br>
 
@@ -67,7 +67,7 @@ export function setVisibilityFilter(filter) {
 ### Now let us try and create an action just for deleting an item inside of our todo list.
 *Hint*: What do you think the action types and action creators should look like in order to delete an item?
 <details>
-<summary> *_Still need more guidance? Check here..._* </summary>
+<summary>Still need more guidance? Check here...</summary>
 <br>
 
 1) Create your delete todo Action Type. Should be a const variable set to a string.
@@ -82,7 +82,7 @@ export function setVisibilityFilter(filter) {
         * They should be *_pure functions_*
         * This means that if you put certain arguments in then it will always produce the same output. There won't be any unexpected side effects OR unexpected outputs.
         * In our Reducers the arguments are the previous state AND our action.
-<details>
+<details open>
 <summary>Let us make our initial reducer!!</summary>
 <br>
 
@@ -163,7 +163,7 @@ It's a little dense and hard to read but ALSO it mixes a lot of different concer
 We are handling visual options and informative options in the same function.
 We could seperate our concerns. This is a bit dense so if anything is unclear you could check on this link.
 https://redux.js.org/basics/reducers#splitting-reducers
-<details>
+<details open>
 <summary>Let us split up all of the todo list functionality from the entire reducer.</summary>
 <br>
 
@@ -284,7 +284,7 @@ export default todoApp;
 </details>
 
 3) Create redux store. (Your application state)
-<details>
+<details open>
 <summary>Here is how we do that!</summary>
 <br>
 1) Install redux. `npm install redux react-redux`
@@ -311,7 +311,7 @@ const store = createStore(todoApp)
 </details>
 
 4) Now let's quickly build a UI (Low priority. Not necessary to know exactly why decisions were made)
-<details>
+<details open>
 <summary>Necessary code. Just copy and paste into their respective files.</summary>
 <br>
 
